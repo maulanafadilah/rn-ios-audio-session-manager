@@ -13,7 +13,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "expo.modules.audiosessionmanager.example"
+      "bundleIdentifier": "expo.modules.audiosessionmanager.example",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "NSMicrophoneUsageDescription": "This app needs access to your microphone to record audio."
+      }
     },
     "android": {
       "adaptiveIcon": {

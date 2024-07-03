@@ -1,20 +1,50 @@
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, SafeAreaView } from "react-native";
 
-import * as AudioSessionManager from 'audio-session-manager';
+import { checkMicrophoneAvailability } from "./useMicrophoneCheck";
 
-export default function App() {
+const App: React.FC = () => {
+  const [microphoneAvailable, setMicrophoneAvailable] = useState<
+    boolean | null
+  >(null);
+
+  useEffect(() => {
+    checkMicrophoneAvailability().then((isAvailable) => {
+      setMicrophoneAvailable(isAvailable);
+    });
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>{AudioSessionManager.hello()}</Text>
-    </View>
+    <SafeAreaView>
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          margin: "auto",
+          height: "100%",
+          flexDirection: "column",
+        }}
+      >
+        <Text style={{ textAlign: "center" }}>
+          Microphone available:{" "}
+          {microphoneAvailable !== null
+            ? microphoneAvailable
+              ? "Yes"
+              : "No"
+            : "Checking..."}
+        </Text>
+        <Button
+          title="Check Microphone Availability"
+          onPress={() => {
+            checkMicrophoneAvailability().then((isAvailable) => {
+              setMicrophoneAvailable(isAvailable);
+            });
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
